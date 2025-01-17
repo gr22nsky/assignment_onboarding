@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-    command: gunicorn --bind 0.0.0.0:8000 backend.wsgi:application
+    command: gunicorn --workers=3 --timeout=120 --bind 0.0.0.0:8000 backend.wsgi:application
     volumes:
       - static_volume:/app/staticfiles
     env_file:
@@ -29,7 +29,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./staticfiles:/static
+      - static_volume:/static
     depends_on:
       - web
 
